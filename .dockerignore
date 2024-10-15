@@ -1,0 +1,6 @@
+venv
+.gitignore
+.DS_Store
+readme.md
+license
+.github

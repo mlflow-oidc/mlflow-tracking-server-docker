@@ -1,0 +1,70 @@
+name: Docker Image Release
+on:
+  push:
+    branches:
+      - main
+jobs:
+  get-mlflow-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract mlflow version
+        id: extract_version
+        run: |
+          VERSION=$(grep 'mlflow-skinny' pyproject.toml | cut -d '"' -f 2)
+          echo "mlflow-skinny version is $VERSION"
+          echo "mlflow_version=$VERSION" >> $GITHUB_OUTPUT
+    outputs:
+      mlflow_version: ${{ steps.extract_version.outputs.mlflow_version }}
+
+  release:
+    runs-on: ubuntu-latest
+    needs: get-mlflow-version
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Get Release version (from current data)
+        id: get_release_version
+        run: |
+          DATE=$(date +'%Y%m%d%H%M')
+          echo "release_date=${DATE}" >> $GITHUB_ENV
+          echo "release_version=${{ needs.get-mlflow-version.outputs.mlflow_version }}-${DATE}" >> $GITHUB_OUTPUT
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile
+          # platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            kharkevich/mlflow-tracking-server:latest
+            kharkevich/mlflow-tracking-server:${{ steps.get_release_version.outputs.release_version }}
+            ghcr.io/kharkevich/mlflow-tracking-server:latest
+            ghcr.io/kharkevich/mlflow-tracking-server:${{ steps.get_release_version.outputs.release_version }}
+
+      - name: Create a Release
+        uses: elgohr/Github-Release-Action@v5
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          title: MLFlow Tracking Server Image ${{ steps.get_release_version.outputs.release_version }}
+          tag: ${{ steps.get_release_version.outputs.release_version }}
