@@ -1,5 +1,5 @@
 ARG PYTHON_VERSION=3.12-slim
-FROM python:${PYTHON_VERSION} as base
+FROM python:${PYTHON_VERSION} AS base
 
 LABEL org.opencontainers.image.authors="Alexander Kharkevich <alex@kharkevich.org>"
 LABEL org.opencontainers.image.source="http://github.com/kharkevich/mlflow-tracking-server"
@@ -8,7 +8,10 @@ LABEL org.opencontainers.image.licenses="Apache-2.0"
 RUN adduser --disabled-password --gecos '' python
 ENV PYTHONUNBUFFERED=1
 
-FROM base as builder
+RUN apt-get update && apt-get install -y \
+    && rm -rf /var/lib/apt/lists/*
+
+FROM base AS builder
 
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -33,7 +36,7 @@ RUN poetry install --no-root --only main && \
 RUN . .venv/bin/activate && \
     pip install --no-cache-dir --no-deps mlflow==$(pip show mlflow-skinny | awk '/Version:/ {print $2}')
 
-FROM base as final
+FROM base AS final
 USER python
 WORKDIR /mlflow
 COPY --from=builder --chown=python:python /mlflow /mlflow
