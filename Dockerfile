@@ -4,6 +4,7 @@ FROM python:${PYTHON_VERSION} AS base
 LABEL org.opencontainers.image.authors="Alexander Kharkevich <alex@kharkevich.org>"
 LABEL org.opencontainers.image.source="http://github.com/kharkevich/mlflow-tracking-server"
 LABEL org.opencontainers.image.licenses="Apache-2.0"
+LABEL org.opencontainers.image.description="MLFlow tracking server with OpenID Connect authentication"
 
 RUN adduser --disabled-password --gecos '' python
 ENV PYTHONUNBUFFERED=1
