@@ -1,3 +1,4 @@
+.venv
 venv
 .gitignore
 .DS_Store

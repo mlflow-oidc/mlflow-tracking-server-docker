@@ -1,6 +1,6 @@
 # MLFlow Tracking Server Docker Image
 
-Use this image to run the [MLFlow Tracking Server](https://github.com/mlflow/mlflow) with the OIDC [Auth plugin](https://github.com/data-platform-hq/mlflow-oidc-auth).
+Use this image to run the [MLFlow Tracking Server](https://github.com/mlflow/mlflow) with the [OIDC Auth plugin](https://github.com/mlflow-oidc/mlflow-oidc-auth).
 
 
 # Versioning
@@ -9,7 +9,7 @@ The Docker image tags always follow this pattern: **MLFlow version - Image Build
 
 # Kubernetes Deployment
 
-A Helm chart reference for deploying it to Kubernetes can be found [here](https://github.com/kharkevich/helm).
+A Helm chart reference for deploying it to Kubernetes can be found [here](https://github.com/mlflow-oidc/helm).
 
 # License
 
