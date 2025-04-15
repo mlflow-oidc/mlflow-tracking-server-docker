@@ -108,6 +108,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Generate date tag
+        id: generate_date
+        run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
@@ -117,7 +121,7 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository_owner }}/mlflow-tracking-server:latest
-            ghcr.io/${{ github.repository_owner }}/mlflow-tracking-server:${{ needs.check-versions.outputs.mlflow_version }}-${{ needs.check-versions.outputs.mlflow_oidc_version }}-$(date +'%Y%m%d')
+            ghcr.io/${{ github.repository_owner }}/mlflow-tracking-server:${{ needs.check-versions.outputs.mlflow_version }}-${{ needs.check-versions.outputs.mlflow_oidc_version }}-${{ steps.generate_date.outputs.date }}
 
       - name: Make release
         id: release
