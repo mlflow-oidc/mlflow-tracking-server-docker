@@ -35,7 +35,7 @@ jobs:
           CURRENT_MLFLOW_OIDC=$(grep 'mlflow-oidc-auth =' pyproject.toml | sed -E 's/.*"([^"]+)".*/\1/')
           echo "current_mlflow_version=${CURRENT_MLFLOW}" >> $GITHUB_OUTPUT
           echo "current_mlflow_oidc_version=${CURRENT_MLFLOW_OIDC}" >> $GITHUB_OUTPUT
-  
+
       - name: Check if versions have changed
         id: check_versions
         run: |
@@ -49,20 +49,31 @@ jobs:
           else
             echo "versions_changed=false" >> $GITHUB_OUTPUT
           fi
+    outputs:
+      mlflow_version: ${{ steps.get_mlflow_version.outputs.mlflow_version }}
+      mlflow_oidc_version: ${{ steps.get_mlflow_oidc_version.outputs.mlflow_oidc_version }}
+      versions_changed: ${{ steps.check_versions.outputs.versions_changed }}
 
+  update-versions:
+    runs-on: ubuntu-latest
+    needs: check-versions
+    if: ${{ needs.check-versions.outputs.versions_changed == 'true' }}
+    steps:
       - name: Update pyproject.toml with new versions
-        if: ${{ steps.check_versions.outputs.versions_changed == 'true' }}
         run: |
-          sed -i "s/mlflow-oidc-auth = \".*\"/mlflow-oidc-auth = \"${{ steps.get_mlflow_oidc_version.outputs.mlflow_oidc_version }}\"/" pyproject.toml
-          sed -i "s/mlflow-skinny = \".*\"/mlflow-skinny = \"${{ steps.get_mlflow_version.outputs.mlflow_version }}\"/" pyproject.toml
+          sed -i "s/mlflow-oidc-auth = \".*\"/mlflow-oidc-auth = \"${{ needs.check-versions.outputs.mlflow_oidc_version }}\"/" pyproject.toml
+          sed -i "s/mlflow-skinny = \".*\"/mlflow-skinny = \"${{ needs.check-versions.outputs.mlflow_version }}\"/" pyproject.toml
+
+      - name: set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
 
       - name: Rebuild lock file
-        if: ${{ steps.check_versions.outputs.versions_changed == 'true' }}
         run: |
           poetry lock
 
       - name: Commit and push changes
-        if: ${{ steps.check_versions.outputs.versions_changed == 'true' }}
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
@@ -70,13 +81,8 @@ jobs:
           git add pyproject.toml
           git add poetry.lock
 
-          git commit -m "feat: rebuild image for MLflow ${{ steps.get_mlflow_version.outputs.mlflow_version }} and MLflow-OIDC ${{ steps.get_mlflow_oidc_version.outputs.mlflow_oidc_version }}"
+          git commit -m "feat: rebuild image for mlflow ${{ needs.check-versions.outputs.mlflow_version }} and mlflow-oidc ${{ needs.check-versions.outputs.mlflow_oidc_version }}"
           git push
-
-    outputs:
-      mlflow_version: ${{ steps.get_mlflow_version.outputs.mlflow_version }}
-      mlflow_oidc_version: ${{ steps.get_mlflow_oidc_version.outputs.mlflow_oidc_version }}
-      versions_changed: ${{ steps.check_versions.outputs.versions_changed }}
 
   build-and-push:
     runs-on: ubuntu-latest
