@@ -28,6 +28,7 @@ runs:
 
     - name: Generate date tag
       id: generate_date
+      shell: bash
       run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
 
     - name: Build and push Docker image

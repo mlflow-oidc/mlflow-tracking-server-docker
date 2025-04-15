@@ -18,18 +18,18 @@ jobs:
 
       - name: Check versions
         id: check_versions
-        uses: ./.github/actions/check-versions.yaml
+        uses: ./.github/actions/check-versions
 
       - name: Update versions
         if: ${{ steps.check_versions.outputs.versions_changed == 'true' }}
-        uses: ./.github/actions/update-versions.yaml
+        uses: ./.github/actions/update-versions
         with:
           mlflow_version: ${{ steps.check_versions.outputs.mlflow_version }}
           mlflow_oidc_version: ${{ steps.check_versions.outputs.mlflow_oidc_version }}
 
       - name: Build and push Docker image
         if: ${{ steps.check_versions.outputs.versions_changed == 'true' }} || github.event_name == 'workflow_dispatch' }}
-        uses: ./.github/actions/build-and-push.yaml
+        uses: ./.github/actions/build-and-push
         with:
           mlflow_version: ${{ steps.check_versions.outputs.mlflow_version }}
           mlflow_oidc_version: ${{ steps.check_versions.outputs.mlflow_oidc_version }}

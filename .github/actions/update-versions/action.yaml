@@ -15,6 +15,7 @@ runs:
   steps:
 
     - name: Update pyproject.toml with new versions
+      shell: bash
       run: |
         sed -i "s/mlflow-oidc-auth = \".*\"/mlflow-oidc-auth = \"${{ inputs.mlflow_oidc_version }}\"/" pyproject.toml
         sed -i "s/mlflow-skinny = \".*\"/mlflow-skinny = \"${{ inputs.mlflow_version }}\"/" pyproject.toml
@@ -28,10 +29,12 @@ runs:
       uses: snok/install-poetry@v1
 
     - name: Rebuild lock file
+      shell: bash
       run: |
         poetry lock
 
     - name: Commit and push changes
+      shell: bash
       run: |
         git config user.name "github-actions"
         git config user.email "github-actions@github.com"
