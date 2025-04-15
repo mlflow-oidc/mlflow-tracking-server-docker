@@ -6,8 +6,8 @@ authors = ["Alexander Kharkevich <alex@kharkevich.org>"]
 
 [tool.poetry.dependencies]
 python = "^3.12"
-mlflow-oidc-auth = "3.3.0"
-mlflow-skinny = "2.20.2"
+mlflow-oidc-auth = "3.6.1"
+mlflow-skinny = "2.21.3"
 
 # PostgreSQL support
 psycopg = "^3.2.6"
