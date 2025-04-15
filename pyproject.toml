@@ -6,25 +6,21 @@ authors = ["Alexander Kharkevich <alex@kharkevich.org>"]
 
 [tool.poetry.dependencies]
 python = "^3.12"
-# mlflow = { version = "^2.16.2", extras = ["extras", "pipelines"] }
 mlflow-oidc-auth = "^3.3.0"
 mlflow-skinny = "2.20.2"
 
 # PostgreSQL support
-psycopg = "^3.2.4"
+psycopg = "^3.2.6"
 
 # AWS S3 Artifact Store support
-boto3 = "^1.36.22"
+boto3 = "^1.37.34"
 
 # Azure Blob Storage Artifact Store support
-azure-storage-blob = "^12.24.1"
-azure-identity = "^1.20.0"
+azure-storage-blob = "^12.25.1"
+azure-identity = "^1.21.0"
 
 # Google Cloud Storage Artifact Store support
-google-cloud-storage = "^3.0.0"
-
-# SFTP Artifact Store support
-pysftp = "^0.2.9"
+google-cloud-storage = "^3.1.0"
 
 [build-system]
 requires = ["poetry-core>=1.9.0"]
