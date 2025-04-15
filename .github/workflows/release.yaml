@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 jobs:
-  check-versions:
+  release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -33,3 +33,4 @@ jobs:
         with:
           mlflow_version: ${{ steps.check_versions.outputs.mlflow_version }}
           mlflow_oidc_version: ${{ steps.check_versions.outputs.mlflow_oidc_version }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}

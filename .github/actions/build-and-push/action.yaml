@@ -9,6 +9,9 @@ inputs:
   mlflow_oidc_version:
     description: "The mlflow-oidc version to tag the image with"
     required: true
+  github_token:
+    description: "GitHub token for authentication"
+    required: true
 
 runs:
   using: "composite"
@@ -24,7 +27,7 @@ runs:
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        password: ${{ inputs.github_token }}
 
     - name: Generate date tag
       id: generate_date
