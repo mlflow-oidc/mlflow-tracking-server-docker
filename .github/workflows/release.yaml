@@ -28,22 +28,26 @@ jobs:
           LATEST_MLFLOW_OIDC=$(curl -s https://api.github.com/repos/mlflow-oidc/mlflow-oidc-auth/releases/latest | jq -r '.tag_name' | sed 's/^v//')
           echo "mlflow_oidc_version=${LATEST_MLFLOW_OIDC}" >> $GITHUB_OUTPUT
 
+      - name: Get current versions from pyproject.toml
+        id: get_current_versions
+        run: |
+          CURRENT_MLFLOW=$(grep 'mlflow-skinny =' pyproject.toml | sed -E 's/.*"([^"]+)".*/\1/')
+          CURRENT_MLFLOW_OIDC=$(grep 'mlflow-oidc-auth =' pyproject.toml | sed -E 's/.*"([^"]+)".*/\1/')
+          echo "current_mlflow_version=${CURRENT_MLFLOW}" >> $GITHUB_OUTPUT
+          echo "current_mlflow_oidc_version=${CURRENT_MLFLOW_OIDC}" >> $GITHUB_OUTPUT
+  
       - name: Check if versions have changed
         id: check_versions
         run: |
-          echo "MLFlow Version: ${{ steps.get_mlflow_version.outputs.mlflow_version }}"
-          echo "MLFlow-OIDC Version: ${{ steps.get_mlflow_oidc_version.outputs.mlflow_oidc_version }}"
-          if [[ "${{ steps.get_mlflow_version.outputs.mlflow_version }}" != "$(cat .mlflow_version 2>/dev/null || echo '')" ]] || \
-             [[ "${{ steps.get_mlflow_oidc_version.outputs.mlflow_oidc_version }}" != "$(cat .mlflow_oidc_version 2>/dev/null || echo '')" ]]; then
+          echo "Latest MLFlow Version: ${{ steps.get_mlflow_version.outputs.mlflow_version }}"
+          echo "Latest MLFlow-OIDC Version: ${{ steps.get_mlflow_oidc_version.outputs.mlflow_oidc_version }}"
+          echo "Current MLFlow Version: ${{ steps.get_current_versions.outputs.current_mlflow_version }}"
+          echo "Current MLFlow-OIDC Version: ${{ steps.get_current_versions.outputs.current_mlflow_oidc_version }}"
+          if [[ "${{ steps.get_mlflow_version.outputs.mlflow_version }}" != "${{ steps.get_current_versions.outputs.current_mlflow_version }}" ]] || \
+              [[ "${{ steps.get_mlflow_oidc_version.outputs.mlflow_oidc_version }}" != "${{ steps.get_current_versions.outputs.current_mlflow_oidc_version }}" ]]; then
             echo "versions_changed=true" >> $GITHUB_OUTPUT
           else
             echo "versions_changed=false" >> $GITHUB_OUTPUT
-
-      - name: Save current versions
-        if: ${{ steps.check_versions.outputs.versions_changed == 'true' }}
-        run: |
-          echo "${{ steps.get_mlflow_version.outputs.mlflow_version }}" > .mlflow_version
-          echo "${{ steps.get_mlflow_oidc_version.outputs.mlflow_oidc_version }}" > .mlflow_oidc_version
 
       - name: Update pyproject.toml with new versions
         if: ${{ steps.check_versions.outputs.versions_changed == 'true' }}
@@ -62,7 +66,6 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
 
-          git add .mlflow_version .mlflow_oidc_version
           git add pyproject.toml
           git add poetry.lock
 
