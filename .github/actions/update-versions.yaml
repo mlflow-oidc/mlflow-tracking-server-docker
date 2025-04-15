@@ -1,0 +1,43 @@
+name: Update Versions
+
+description: Updates the versions in pyproject.toml and rebuilds the lock file.
+
+inputs:
+  mlflow_version:
+    description: "The latest mlflow version"
+    required: true
+  mlflow_oidc_version:
+    description: "The latest mlflow-oidc version"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+
+    - name: Update pyproject.toml with new versions
+      run: |
+        sed -i "s/mlflow-oidc-auth = \".*\"/mlflow-oidc-auth = \"${{ inputs.mlflow_oidc_version }}\"/" pyproject.toml
+        sed -i "s/mlflow-skinny = \".*\"/mlflow-skinny = \"${{ inputs.mlflow_version }}\"/" pyproject.toml
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+
+    - name: Rebuild lock file
+      run: |
+        poetry lock
+
+    - name: Commit and push changes
+      run: |
+        git config user.name "github-actions"
+        git config user.email "github-actions@github.com"
+
+        git add pyproject.toml
+        git add poetry.lock
+
+        git commit -m "feat: rebuild image for mlflow ${{ inputs.mlflow_version }} and mlflow-oidc ${{ inputs.mlflow_oidc_version }}"
+        git push

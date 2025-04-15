@@ -16,115 +16,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Get latest mlflow version
-        id: get_mlflow_version
-        run: |
-          LATEST_MLFLOW=$(curl -s https://api.github.com/repos/mlflow/mlflow/releases/latest | jq -r '.tag_name' | sed 's/^v//')
-          echo "mlflow_version=${LATEST_MLFLOW}" >> $GITHUB_OUTPUT
-
-      - name: Get latest mlflow-oidc version
-        id: get_mlflow_oidc_version
-        run: |
-          LATEST_MLFLOW_OIDC=$(curl -s https://api.github.com/repos/mlflow-oidc/mlflow-oidc-auth/releases/latest | jq -r '.tag_name' | sed 's/^v//')
-          echo "mlflow_oidc_version=${LATEST_MLFLOW_OIDC}" >> $GITHUB_OUTPUT
-
-      - name: Get current versions from pyproject.toml
-        id: get_current_versions
-        run: |
-          CURRENT_MLFLOW=$(grep 'mlflow-skinny =' pyproject.toml | sed -E 's/.*"([^"]+)".*/\1/')
-          CURRENT_MLFLOW_OIDC=$(grep 'mlflow-oidc-auth =' pyproject.toml | sed -E 's/.*"([^"]+)".*/\1/')
-          echo "current_mlflow_version=${CURRENT_MLFLOW}" >> $GITHUB_OUTPUT
-          echo "current_mlflow_oidc_version=${CURRENT_MLFLOW_OIDC}" >> $GITHUB_OUTPUT
-
-      - name: Check if versions have changed
+      - name: Check versions
         id: check_versions
-        run: |
-          echo "Latest mlflow Version: ${{ steps.get_mlflow_version.outputs.mlflow_version }}"
-          echo "Current mlflow Version: ${{ steps.get_current_versions.outputs.current_mlflow_version }}"
-          echo "Latest mlflow-oidc Version: ${{ steps.get_mlflow_oidc_version.outputs.mlflow_oidc_version }}"
-          echo "Current mlflow-oidc Version: ${{ steps.get_current_versions.outputs.current_mlflow_oidc_version }}"
-          if [[ "${{ steps.get_mlflow_version.outputs.mlflow_version }}" != "${{ steps.get_current_versions.outputs.current_mlflow_version }}" ]] || \
-              [[ "${{ steps.get_mlflow_oidc_version.outputs.mlflow_oidc_version }}" != "${{ steps.get_current_versions.outputs.current_mlflow_oidc_version }}" ]]; then
-            echo "versions_changed=true" >> $GITHUB_OUTPUT
-          else
-            echo "versions_changed=false" >> $GITHUB_OUTPUT
-          fi
-    outputs:
-      mlflow_version: ${{ steps.get_mlflow_version.outputs.mlflow_version }}
-      mlflow_oidc_version: ${{ steps.get_mlflow_oidc_version.outputs.mlflow_oidc_version }}
-      versions_changed: ${{ steps.check_versions.outputs.versions_changed }}
+        uses: ./.github/actions/check-versions.yaml
 
-  update-versions:
-    runs-on: ubuntu-latest
-    needs: check-versions
-    if: ${{ needs.check-versions.outputs.versions_changed == 'true' }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Update pyproject.toml with new versions
-        run: |
-          sed -i "s/mlflow-oidc-auth = \".*\"/mlflow-oidc-auth = \"${{ needs.check-versions.outputs.mlflow_oidc_version }}\"/" pyproject.toml
-          sed -i "s/mlflow-skinny = \".*\"/mlflow-skinny = \"${{ needs.check-versions.outputs.mlflow_version }}\"/" pyproject.toml
-
-      - name: set up Python
-        uses: actions/setup-python@v5
+      - name: Update versions
+        if: ${{ steps.check_versions.outputs.versions_changed == 'true' }}
+        uses: ./.github/actions/update-versions.yaml
         with:
-          python-version: '3.12'
-
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-
-      - name: Rebuild lock file
-        run: |
-          poetry lock
-
-      - name: Commit and push changes
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-
-          git add pyproject.toml
-          git add poetry.lock
-
-          git commit -m "feat: rebuild image for mlflow ${{ needs.check-versions.outputs.mlflow_version }} and mlflow-oidc ${{ needs.check-versions.outputs.mlflow_oidc_version }}"
-          git push
-
-  build-and-push:
-    runs-on: ubuntu-latest
-    needs: [check-versions, update-versions]
-    if: success() && (${{ needs.check-versions.outputs.versions_changed == 'true' || github.event_name == 'workflow_dispatch' }})
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Generate date tag
-        id: generate_date
-        run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+          mlflow_version: ${{ steps.check_versions.outputs.mlflow_version }}
+          mlflow_oidc_version: ${{ steps.check_versions.outputs.mlflow_oidc_version }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v6
+        if: ${{ steps.check_versions.outputs.versions_changed == 'true' }} || github.event_name == 'workflow_dispatch' }}
+        uses: ./.github/actions/build-and-push.yaml
         with:
-          context: .
-          file: Dockerfile
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: |
-            ghcr.io/${{ github.repository_owner }}/mlflow-tracking-server:latest
-            ghcr.io/${{ github.repository_owner }}/mlflow-tracking-server:${{ needs.check-versions.outputs.mlflow_version }}-${{ needs.check-versions.outputs.mlflow_oidc_version }}-${{ steps.generate_date.outputs.date }}
-
-      - name: Make release
-        id: release
-        uses: cycjimmy/semantic-release-action@v4
-        env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          mlflow_version: ${{ steps.check_versions.outputs.mlflow_version }}
+          mlflow_oidc_version: ${{ steps.check_versions.outputs.mlflow_oidc_version }}

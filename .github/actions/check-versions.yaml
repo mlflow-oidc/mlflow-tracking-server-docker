@@ -1,0 +1,55 @@
+name: Check Versions
+
+description: Checks if the versions of mlflow and mlflow-oidc have changed.
+
+outputs:
+  mlflow_version:
+    description: "The latest mlflow version"
+  mlflow_oidc_version:
+    description: "The latest mlflow-oidc version"
+  versions_changed:
+    description: "Whether the versions have changed"
+
+runs:
+  using: "composite"
+  steps:
+
+    - name: Get latest mlflow version
+      id: get_mlflow_version
+      run: |
+        LATEST_MLFLOW=$(curl -s https://api.github.com/repos/mlflow/mlflow/releases/latest | jq -r '.tag_name' | sed 's/^v//')
+        echo "mlflow_version=${LATEST_MLFLOW}" >> $GITHUB_OUTPUT
+
+    - name: Get latest mlflow-oidc version
+      id: get_mlflow_oidc_version
+      run: |
+        LATEST_MLFLOW_OIDC=$(curl -s https://api.github.com/repos/mlflow-oidc/mlflow-oidc-auth/releases/latest | jq -r '.tag_name' | sed 's/^v//')
+        echo "mlflow_oidc_version=${LATEST_MLFLOW_OIDC}" >> $GITHUB_OUTPUT
+
+    - name: Get current versions from pyproject.toml
+      id: get_current_versions
+      run: |
+        CURRENT_MLFLOW=$(grep 'mlflow-skinny =' pyproject.toml | sed -E 's/.*"([^"]+)".*/\1/')
+        CURRENT_MLFLOW_OIDC=$(grep 'mlflow-oidc-auth =' pyproject.toml | sed -E 's/.*"([^"]+)".*/\1/')
+        echo "current_mlflow_version=${CURRENT_MLFLOW}" >> $GITHUB_OUTPUT
+        echo "current_mlflow_oidc_version=${CURRENT_MLFLOW_OIDC}" >> $GITHUB_OUTPUT
+
+    - name: Check if versions have changed
+      id: check_component_versions
+      run: |
+        echo "Latest mlflow Version: ${{ steps.get_mlflow_version.outputs.mlflow_version }}"
+        echo "Current mlflow Version: ${{ steps.get_current_versions.outputs.current_mlflow_version }}"
+        echo "Latest mlflow-oidc Version: ${{ steps.get_mlflow_oidc_version.outputs.mlflow_oidc_version }}"
+        echo "Current mlflow-oidc Version: ${{ steps.get_current_versions.outputs.current_mlflow_oidc_version }}"
+        if [[ "${{ steps.get_mlflow_version.outputs.mlflow_version }}" != "${{ steps.get_current_versions.outputs.current_mlflow_version }}" ]] || \
+            [[ "${{ steps.get_mlflow_oidc_version.outputs.mlflow_oidc_version }}" != "${{ steps.get_current_versions.outputs.current_mlflow_oidc_version }}" ]]; then
+          echo "versions_changed=true" >> $GITHUB_OUTPUT
+        else
+          echo "versions_changed=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Set outputs
+      run: |
+        echo "mlflow_version=${{ steps.get_mlflow_version.outputs.mlflow_version }}" >> $GITHUB_OUTPUT
+        echo "mlflow_oidc_version=${{ steps.get_mlflow_oidc_version.outputs.mlflow_oidc_version }}" >> $GITHUB_OUTPUT
+        echo "versions_changed=${{ steps.check_component_versions.outputs.versions_changed }}" >> $GITHUB_OUTPUT
