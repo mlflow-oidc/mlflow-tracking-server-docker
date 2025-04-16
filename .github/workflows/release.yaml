@@ -28,7 +28,7 @@ jobs:
           mlflow_oidc_version: ${{ steps.check_versions.outputs.mlflow_oidc_version }}
 
       - name: Build and push Docker image
-        if: ${{ steps.check_versions.outputs.versions_changed == 'true' }} || github.event_name == 'workflow_dispatch' }}
+        if: ${{ steps.check_versions.outputs.versions_changed == 'true' }}
         uses: ./.github/actions/build-and-push
         with:
           mlflow_version: ${{ steps.check_versions.outputs.mlflow_version }}
