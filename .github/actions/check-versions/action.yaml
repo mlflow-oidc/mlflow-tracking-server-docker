@@ -50,7 +50,7 @@ runs:
         echo "Current mlflow-oidc Version: ${{ steps.get_current_versions.outputs.current_mlflow_oidc_version }}"
         if [[ "${{ steps.get_mlflow_version.outputs.mlflow_version }}" != "${{ steps.get_current_versions.outputs.current_mlflow_version }}" ]] || \
             [[ "${{ steps.get_mlflow_oidc_version.outputs.mlflow_oidc_version }}" != "${{ steps.get_current_versions.outputs.current_mlflow_oidc_version }}" ]]; then
-          echo "is_versions_changed=true" >> $GITHUB_OUTPUT
+          echo "versions_changed=true" >> $GITHUB_OUTPUT
         else
           echo "versions_changed=false" >> $GITHUB_OUTPUT
         fi
