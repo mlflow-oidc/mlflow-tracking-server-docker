@@ -2,7 +2,7 @@ ARG PYTHON_VERSION=3.12-slim
 FROM python:${PYTHON_VERSION} AS base
 
 LABEL org.opencontainers.image.authors="Alexander Kharkevich <alex@kharkevich.org>"
-LABEL org.opencontainers.image.source = "https://github.com/mlflow-oidc/mlflow-tracking-server-docker"
+LABEL org.opencontainers.image.source="https://github.com/mlflow-oidc/mlflow-tracking-server-docker"
 LABEL org.opencontainers.image.licenses="Apache-2.0"
 LABEL org.opencontainers.image.description="MLFlow tracking server with OpenID Connect authentication"
 
