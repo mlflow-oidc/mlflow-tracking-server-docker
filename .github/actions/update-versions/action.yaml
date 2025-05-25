@@ -14,12 +14,6 @@ runs:
   using: "composite"
   steps:
 
-    - name: Update pyproject.toml with new versions
-      shell: bash
-      run: |
-        sed -i "s/mlflow-oidc-auth = \".*\"/mlflow-oidc-auth = \"${{ inputs.mlflow_oidc_version }}\"/" pyproject.toml
-        sed -i "s/mlflow-skinny = \".*\"/mlflow-skinny = \"${{ inputs.mlflow_version }}\"/" pyproject.toml
-
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
@@ -30,11 +24,16 @@ runs:
       with:
         version: 2.1.3
 
+    - name: Update pyproject.toml with new versions
+      shell: bash
+      run: |
+        python -m poetry add mlflow-skinny@${{ inputs.mlflow_version }}
+        python -m poetry add mlflow-oidc-auth@${{ inputs.mlflow_oidc_version }}
     - name: Update dependencies and Rebuild lock file
       shell: bash
       run: |
-        poetry update
-        poetry lock
+        python -m poetry update
+        python -m poetry lock
 
     - name: Commit and push changes
       shell: bash

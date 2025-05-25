@@ -17,6 +17,16 @@ runs:
   using: "composite"
   steps:
 
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: 2.1.3
+
     - name: Get latest mlflow version
       id: get_mlflow_version
       shell: bash
@@ -35,8 +45,8 @@ runs:
       id: get_current_versions
       shell: bash
       run: |
-        CURRENT_MLFLOW=$(grep 'mlflow-skinny =' pyproject.toml | sed -E 's/.*"([^"]+)".*/\1/')
-        CURRENT_MLFLOW_OIDC=$(grep 'mlflow-oidc-auth =' pyproject.toml | sed -E 's/.*"([^"]+)".*/\1/')
+        CURRENT_MLFLOW=$(python -m poetry poetry show -l mlflow-skinny --no-ansi | grep -E '^\s*version' | awk '{print $3}')
+        CURRENT_MLFLOW_OIDC=$(python -m poetry show -l mlflow-oidc-auth --no-ansi | grep -E '^\s*version' | awk '{print $3}')
         echo "current_mlflow_version=${CURRENT_MLFLOW}" >> $GITHUB_OUTPUT
         echo "current_mlflow_oidc_version=${CURRENT_MLFLOW_OIDC}" >> $GITHUB_OUTPUT
 
