@@ -16,6 +16,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Preconditions
+        uses: ./.github/actions/preconditions
+
       - name: Check versions
         id: check_versions
         uses: ./.github/actions/check-versions

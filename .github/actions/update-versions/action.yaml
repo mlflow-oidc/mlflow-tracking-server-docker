@@ -14,21 +14,12 @@ runs:
   using: "composite"
   steps:
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
-
-    - name: Install Poetry
-      uses: snok/install-poetry@v1
-      with:
-        version: 2.1.3
-
     - name: Update pyproject.toml with new versions
       shell: bash
       run: |
         python -m poetry add mlflow-skinny@${{ inputs.mlflow_version }}
         python -m poetry add mlflow-oidc-auth@${{ inputs.mlflow_oidc_version }}
+
     - name: Update dependencies and Rebuild lock file
       shell: bash
       run: |
