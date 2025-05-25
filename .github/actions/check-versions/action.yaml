@@ -35,7 +35,7 @@ runs:
       id: get_current_versions
       shell: bash
       run: |
-        CURRENT_MLFLOW=$(python -m poetry poetry show -l mlflow-skinny --no-ansi | grep -E '^\s*version' | awk '{print $3}')
+        CURRENT_MLFLOW=$(python -m poetry show -l mlflow-skinny --no-ansi | grep -E '^\s*version' | awk '{print $3}')
         CURRENT_MLFLOW_OIDC=$(python -m poetry show -l mlflow-oidc-auth --no-ansi | grep -E '^\s*version' | awk '{print $3}')
         echo "current_mlflow_version=${CURRENT_MLFLOW}" >> $GITHUB_OUTPUT
         echo "current_mlflow_oidc_version=${CURRENT_MLFLOW_OIDC}" >> $GITHUB_OUTPUT
