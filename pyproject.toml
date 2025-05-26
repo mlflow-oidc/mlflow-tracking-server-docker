@@ -7,11 +7,11 @@ requires-python = ">=3.12, <3.13.dev0"
 dependencies = [
     "mlflow-oidc-auth (==4.1.0)",
     "mlflow-skinny (==2.22.0)",
-    "psycopg[binary]>=3.2.6",
     "boto3>=1.37.34",
     "azure-storage-blob>=12.25.1",
     "azure-identity>=1.21.0",
     "google-cloud-storage>=3.1.0",
+    "psycopg2-binary (==2.9.10)",
 ]
 
 [build-system]
