@@ -21,14 +21,14 @@ runs:
       id: get_mlflow_version
       shell: bash
       run: |
-        LATEST_MLFLOW=$(curl -s https://api.github.com/repos/mlflow/mlflow/releases/latest | jq -r '.tag_name' | sed 's/^v//')
+        LATEST_MLFLOW=$(curl -s https://pypi.org/pypi/mlflow/json | jq -r '.info.version')
         echo "mlflow_version=${LATEST_MLFLOW}" >> $GITHUB_OUTPUT
 
     - name: Get latest mlflow-oidc version
       id: get_mlflow_oidc_version
       shell: bash
       run: |
-        LATEST_MLFLOW_OIDC=$(curl -s https://api.github.com/repos/mlflow-oidc/mlflow-oidc-auth/releases/latest | jq -r '.tag_name' | sed 's/^v//')
+        LATEST_MLFLOW_OIDC=$(curl -s https://pypi.org/pypi/mlflow-oidc-auth/json | jq -r '.info.version')
         echo "mlflow_oidc_version=${LATEST_MLFLOW_OIDC}" >> $GITHUB_OUTPUT
 
     - name: Get current versions from pyproject.toml
