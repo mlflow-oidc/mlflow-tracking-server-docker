@@ -1111,14 +1111,14 @@ files = [
 
 [[package]]
 name = "mlflow-oidc-auth"
-version = "5.1.0"
+version = "5.1.1"
 description = "OIDC auth plugin for MLflow"
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "mlflow_oidc_auth-5.1.0-py3-none-any.whl", hash = "sha256:137027daafd181e265c91c8d3c5300e8cc3fa3eaab5a4bb2aea36df2750c4e6b"},
-    {file = "mlflow_oidc_auth-5.1.0.tar.gz", hash = "sha256:e161bb9356ee8520401fdb655cc1c47e7bd8fb094921af3bf56a120e7b64d278"},
+    {file = "mlflow_oidc_auth-5.1.1-py3-none-any.whl", hash = "sha256:e6759434c787e5fdca937599f303dbba7a97e673d18f7e53f1c24f65b805067c"},
+    {file = "mlflow_oidc_auth-5.1.1.tar.gz", hash = "sha256:0c4398ac7bed9ca2c2be70464016802d0a3d7536f2cd998ee314ae5787a99389"},
 ]
 
 [package.dependencies]
@@ -2065,4 +2065,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12, <3.13.dev0"
-content-hash = "fe6a9399009302ff05f7015b465dc66b06e88e338eb0c7f173973c6537ece8b0"
+content-hash = "eb42034dcf556a0199880ac05fe73e9f4aa554863b50d167560c6fbe727f29c5"
