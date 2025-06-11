@@ -18,7 +18,7 @@ runs:
       shell: bash
       run: |
         python -m poetry add mlflow-oidc-auth@${{ inputs.mlflow_oidc_version }}
-        python -m poetry add mlflow-skinny@${{ inputs.mlflow_version }}
+        python -m poetry add mlflow@${{ inputs.mlflow_version }}
 
     - name: Update dependencies and Rebuild lock file
       shell: bash

@@ -34,10 +34,6 @@ COPY pyproject.toml poetry.toml poetry.lock /mlflow/
 RUN python -m poetry install --no-root --only main && \
     python -m poetry cache clear pypi --all
 
-# install mlflow w/o dependencies to bring UI back
-RUN . .venv/bin/activate && \
-    pip install --no-cache-dir --no-deps mlflow==$(pip show mlflow-skinny | awk '/Version:/ {print $2}')
-
 FROM base AS final
 USER python
 WORKDIR /mlflow
