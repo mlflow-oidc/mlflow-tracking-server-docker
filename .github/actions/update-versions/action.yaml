@@ -17,7 +17,7 @@ runs:
     - name: Update pyproject.toml with new versions
       shell: bash
       run: |
-        python -m poetry add mlflow-oidc-auth@${{ inputs.mlflow_oidc_version }}
+        python -m poetry add 'mlflow-oidc-auth[full,caching-redis]'@${{ inputs.mlflow_oidc_version }}
         python -m poetry add mlflow@${{ inputs.mlflow_version }}
 
     - name: Update dependencies and Rebuild lock file
