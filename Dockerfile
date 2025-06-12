@@ -31,8 +31,7 @@ RUN chown python:python /mlflow
 
 COPY pyproject.toml poetry.toml poetry.lock /mlflow/
 
-RUN python -m poetry install --no-root --only main && \
-    python -m poetry cache clear pypi --all
+RUN python -m poetry install --no-root --no-ansi --no-interaction --no-cache
 
 FROM base AS final
 USER python
