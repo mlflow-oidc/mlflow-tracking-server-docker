@@ -142,18 +142,18 @@ files = [
 
 [[package]]
 name = "boto3"
-version = "1.40.3"
+version = "1.40.4"
 description = "The AWS SDK for Python"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "boto3-1.40.3-py3-none-any.whl", hash = "sha256:6e8ace4439b5a03ce1b07532a86a3e56fc0adc268bcdeef55624d64f99e90e2a"},
-    {file = "boto3-1.40.3.tar.gz", hash = "sha256:8cdda3a3fbaa0229aa32fdf2f6f59b5c96e5cd5916ed45be378c06fae09cef19"},
+    {file = "boto3-1.40.4-py3-none-any.whl", hash = "sha256:95cdc86454e9ff43e0693c5d807a54ce6813b6711d3543a0052ead5216b93367"},
+    {file = "boto3-1.40.4.tar.gz", hash = "sha256:6eceffe4ae67c2cb077574289c0efe3ba60e8446646893a974fc3c2fa1130e7c"},
 ]
 
 [package.dependencies]
-botocore = ">=1.40.3,<1.41.0"
+botocore = ">=1.40.4,<1.41.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.13.0,<0.14.0"
 
@@ -162,14 +162,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.40.3"
+version = "1.40.4"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "botocore-1.40.3-py3-none-any.whl", hash = "sha256:0c6d00b4412babb5e3d0944b5e057d31f763bf54429d5667f367e7b46e5c1c22"},
-    {file = "botocore-1.40.3.tar.gz", hash = "sha256:bba6b642fff19e32bee52edbbb8dd3f45e37ba7b8e54addc9ae3b105c4eaf2a4"},
+    {file = "botocore-1.40.4-py3-none-any.whl", hash = "sha256:4e131c52731e10a6af998c2ac3bfbda12e6ecef0e3633268c7752d0502c74197"},
+    {file = "botocore-1.40.4.tar.gz", hash = "sha256:f1dacde69ec8b08f39bcdb62247bab4554938b5d7f8805ade78447da55c9df36"},
 ]
 
 [package.dependencies]
@@ -609,14 +609,14 @@ tests = ["pytest", "pytest-cov", "pytest-xdist"]
 
 [[package]]
 name = "databricks-sdk"
-version = "0.61.0"
+version = "0.62.0"
 description = "Databricks SDK for Python (Beta)"
 optional = false
 python-versions = ">=3.7"
 groups = ["main"]
 files = [
-    {file = "databricks_sdk-0.61.0-py3-none-any.whl", hash = "sha256:709ac7c709f843567b04fba6cea8a53ee644b79314e9a9ac4db0c1b3c1d2d5fe"},
-    {file = "databricks_sdk-0.61.0.tar.gz", hash = "sha256:06e50663c2c87e94f5e505390b74bc5c7c5330f4b4be35616b7aed06cf940af0"},
+    {file = "databricks_sdk-0.62.0-py3-none-any.whl", hash = "sha256:79d4abe60306239985a5b718583923e13316c5417204017b0dadf74bccfcc6e1"},
+    {file = "databricks_sdk-0.62.0.tar.gz", hash = "sha256:12f8da735f74cba5265dcb0620c30941628f63787e6ea7e57cc5ed22d9e1b987"},
 ]
 
 [package.dependencies]
@@ -1697,14 +1697,14 @@ xethub = ["mlflow-xethub"]
 
 [[package]]
 name = "mlflow-oidc-auth"
-version = "5.5.0"
+version = "5.5.1"
 description = "OIDC auth plugin for MLflow"
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "mlflow_oidc_auth-5.5.0-py3-none-any.whl", hash = "sha256:f3f970d328c76c927ed7dec8d00d032e2377337a5ada18e576ac60e82d5a1538"},
-    {file = "mlflow_oidc_auth-5.5.0.tar.gz", hash = "sha256:7b2ef365e1d8dc64c9d583535046919efa3f7e9f1f91a483b94f266c0f6f6e04"},
+    {file = "mlflow_oidc_auth-5.5.1-py3-none-any.whl", hash = "sha256:532f9475b730e88e75e54dcee2d7729876d74d86119d1b6304c3a54eee4a24fb"},
+    {file = "mlflow_oidc_auth-5.5.1.tar.gz", hash = "sha256:7e97819e905115ef654f69955ae8dc24ac4c5a1d9b9821e3ad7dc239a0d12a90"},
 ]
 
 [package.dependencies]
@@ -3266,4 +3266,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12, <3.13.dev0"
-content-hash = "14eb94e2bc9e4364444405650709c83911de03a9b960987b7ccf35a92ef2c9dd"
+content-hash = "1680c5118db878a2b29e3565bb73a9361d917138204eaaf327afc89383f7bf38"
