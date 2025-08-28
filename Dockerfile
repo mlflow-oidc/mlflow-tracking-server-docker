@@ -22,16 +22,16 @@ RUN apt-get update && apt-get install -y \
     make \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --no-cache-dir poetry wheel
+RUN pip install --no-cache-dir uv wheel
 
 USER python
 WORKDIR /mlflow
 # podman can't create directories with the right permissions
 RUN chown python:python /mlflow
 
-COPY pyproject.toml poetry.toml poetry.lock /mlflow/
+COPY pyproject.toml uv.lock /mlflow/
 
-RUN python -m poetry install --no-root --no-ansi --no-interaction --no-cache
+RUN uv sync --frozen --no-install-project --no-cache
 
 FROM base AS final
 USER python
