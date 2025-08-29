@@ -29,6 +29,7 @@ runs:
       uses: astral-sh/setup-uv@v6
       with:
         version: ${{ inputs.uv_version }}
+        enable-cache: true
 
     - name: Install dependencies
       shell: bash
