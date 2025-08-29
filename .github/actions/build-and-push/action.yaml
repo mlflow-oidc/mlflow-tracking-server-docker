@@ -39,6 +39,8 @@ runs:
         file: Dockerfile
         platforms: linux/amd64,linux/arm64
         push: true
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
         tags: |
           ghcr.io/${{ github.repository_owner }}/mlflow-tracking-server:latest
           ghcr.io/${{ github.repository_owner }}/mlflow-tracking-server:${{ inputs.mlflow_version }}-${{ inputs.mlflow_oidc_version }}-${{ steps.generate_date.outputs.date }}

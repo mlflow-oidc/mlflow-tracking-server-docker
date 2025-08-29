@@ -14,17 +14,15 @@ runs:
   using: "composite"
   steps:
 
-    - name: Update pyproject.toml with new versions
+    - name: Update dependencies
       shell: bash
       run: |
-        python -m poetry add 'mlflow-oidc-auth[full,caching-redis,fastapi]'@${{ inputs.mlflow_oidc_version }}
-        python -m poetry add mlflow@${{ inputs.mlflow_version }}
+        uv add 'mlflow-oidc-auth[caching-redis,fastapi,full]==${{ inputs.mlflow_oidc_version }}'
+        uv add 'mlflow==${{ inputs.mlflow_version }}'
 
-    - name: Update dependencies and Rebuild lock file
+    - name: Rebuild lock file
       shell: bash
-      run: |
-        python -m poetry update
-        python -m poetry lock
+      run: uv lock
 
     - name: Commit and push changes
       shell: bash
@@ -33,7 +31,7 @@ runs:
         git config user.email "github-actions@github.com"
 
         git add pyproject.toml
-        git add poetry.lock
+        git add uv.lock
 
         git commit -m "feat: rebuild image for mlflow ${{ inputs.mlflow_version }} and mlflow-oidc ${{ inputs.mlflow_oidc_version }}"
         git push
