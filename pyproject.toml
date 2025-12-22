@@ -6,7 +6,7 @@ authors = [{ name = "Alexander Kharkevich", email = "alex@kharkevich.org" }]
 requires-python = ">=3.12, <3.13.dev0"
 dependencies = [
     "mlflow-oidc-auth[caching-redis,fastapi,full]==5.7.0",
-    "mlflow==3.7.0",
+    "mlflow==3.8.0",
     "boto3>=1.37.34",
     "azure-storage-blob>=12.25.1",
     "azure-identity>=1.21.0",
