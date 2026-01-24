@@ -1,10 +1,13 @@
 ARG PYTHON_VERSION=3.12-slim
+ARG BUILD_DATE=unspecified
 FROM python:${PYTHON_VERSION} AS base
 
 LABEL org.opencontainers.image.authors="Alexander Kharkevich <alex@kharkevich.org>"
 LABEL org.opencontainers.image.source="https://github.com/mlflow-oidc/mlflow-tracking-server-docker"
 LABEL org.opencontainers.image.licenses="Apache-2.0"
 LABEL org.opencontainers.image.description="MLFlow tracking server with OpenID Connect authentication"
+LABEL org.opencontainers.image.created="${BUILD_DATE}"
+LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/mlflow-oidc/mlflow-tracking-server-docker/main/readme.md"
 
 RUN adduser --disabled-password --gecos '' python
 ENV PYTHONUNBUFFERED=1

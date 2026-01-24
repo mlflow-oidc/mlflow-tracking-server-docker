@@ -30,7 +30,9 @@ runs:
     - name: Generate date tag
       id: generate_date
       shell: bash
-      run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+      run: |
+        echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+        echo "build_date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v6
@@ -41,6 +43,8 @@ runs:
         push: true
         cache-from: type=gha
         cache-to: type=gha,mode=max
+        build-args: |
+          BUILD_DATE=${{ steps.generate_date.outputs.build_date }}
         tags: |
           ghcr.io/${{ github.repository_owner }}/mlflow-tracking-server:latest
           ghcr.io/${{ github.repository_owner }}/mlflow-tracking-server:${{ inputs.mlflow_version }}-${{ inputs.mlflow_oidc_version }}-${{ steps.generate_date.outputs.date }}
