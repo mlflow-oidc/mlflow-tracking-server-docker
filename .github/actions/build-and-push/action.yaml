@@ -12,6 +12,10 @@ inputs:
   github_token:
     description: "GitHub token for authentication"
     required: true
+  sign_image:
+    description: "Whether to sign the image using Cosign"
+    required: false
+    default: "true"
 
 runs:
   using: "composite"
@@ -48,3 +52,9 @@ runs:
         tags: |
           ghcr.io/${{ github.repository_owner }}/mlflow-tracking-server:latest
           ghcr.io/${{ github.repository_owner }}/mlflow-tracking-server:${{ inputs.mlflow_version }}-${{ inputs.mlflow_oidc_version }}-${{ steps.generate_date.outputs.date }}
+
+    - name: Sign Docker image
+      if: ${{ inputs.sign_image == 'true' }}
+      uses: ./.github/actions/sign-oci-image
+      with:
+        image: ghcr.io/${{ github.repository_owner }}/mlflow-tracking-server:${{ inputs.mlflow_version }}-${{ inputs.mlflow_oidc_version }}-${{ steps.generate_date.outputs.date }}

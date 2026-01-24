@@ -1,0 +1,20 @@
+name: Sign OCI image with Cosign
+description: Keyless Cosign signing using GitHub OIDC
+
+inputs:
+  image:
+    description: Full OCI image reference (e.g. ghcr.io/org/image:tag)
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Install Cosign
+      uses: sigstore/cosign-installer@v4.0.0
+
+    - name: Sign image (keyless)
+      shell: bash
+      env:
+        COSIGN_EXPERIMENTAL: "true"
+      run: |
+        cosign sign --yes ${{ inputs.image }}

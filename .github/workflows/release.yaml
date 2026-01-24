@@ -7,6 +7,7 @@ on:
 
 permissions:
   packages: write
+  id-token: write
   contents: write
 
 jobs:
@@ -39,3 +40,10 @@ jobs:
           mlflow_version: ${{ steps.check_versions.outputs.mlflow_version }}
           mlflow_oidc_version: ${{ steps.check_versions.outputs.mlflow_oidc_version }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish Artifact Hub OCI metadata
+        if: |
+          steps.check_versions.outputs.versions_changed == 'true' ||
+          github.event_name == 'workflow_dispatch'
+        uses: ./.github/actions/publish-artifacthub-metadata
+

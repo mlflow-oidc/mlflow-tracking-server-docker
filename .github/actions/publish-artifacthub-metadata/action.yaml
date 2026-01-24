@@ -1,0 +1,32 @@
+name: Publish Artifact Hub OCI metadata
+description: Push artifacthub-repo.yml to OCI registry
+
+inputs:
+  image_name:
+    description: Image name without tag (e.g. ghcr.io/org/image)
+    required: false
+    default: ghcr.io/${{ github.repository_owner }}/mlflow-tracking-server
+
+  metadata_file:
+    description: Path to artifacthub-repo.yml
+    default: artifacthub-repo.yml
+    required: false
+
+runs:
+  using: composite
+  steps:
+    # TODO: replace with delivery-station
+    - name: Install ORAS
+      shell: bash
+      run: |
+        curl -LO https://github.com/oras-project/oras/releases/download/v1.3.0/oras_1.3.0_linux_amd64.tar.gz
+        tar -xzf oras_1.3.0_linux_amd64.tar.gz
+        sudo mv oras /usr/local/bin/oras
+
+    - name: Push Artifact Hub metadata
+      shell: bash
+      run: |
+        oras push \
+          ${{ inputs.image_name }}:artifacthub.io \
+          --config /dev/null:application/vnd.cncf.artifacthub.config.v1+yaml \
+          ${{ inputs.metadata_file }}:application/vnd.cncf.artifacthub.repository-metadata.layer.v1.yaml
