@@ -8,6 +8,7 @@ LABEL org.opencontainers.image.licenses="Apache-2.0"
 LABEL org.opencontainers.image.description="MLFlow tracking server with OpenID Connect authentication"
 LABEL org.opencontainers.image.created="${BUILD_DATE}"
 LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/mlflow-oidc/mlflow-tracking-server-docker/main/readme.md"
+LABEL io.artifacthub.package.logo-url="https://raw.githubusercontent.com/mlflow-oidc/mlflow-oidc-auth/refs/heads/main/web-react/public/favicon.svg"
 
 RUN adduser --disabled-password --gecos '' python
 ENV PYTHONUNBUFFERED=1
