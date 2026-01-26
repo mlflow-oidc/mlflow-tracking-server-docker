@@ -5,7 +5,7 @@ ARG BUILD_DATE
 LABEL org.opencontainers.image.authors="Alexander Kharkevich <alex@kharkevich.org>"
 LABEL org.opencontainers.image.source="https://github.com/mlflow-oidc/mlflow-tracking-server-docker"
 LABEL org.opencontainers.image.licenses="Apache-2.0"
-LABEL org.opencontainers.image.description="MLFlow tracking server with OpenID Connect authentication"
+LABEL org.opencontainers.image.description="MLflow Tracking Server with OIDC (SSO) plugin"
 LABEL org.opencontainers.image.created="${BUILD_DATE}"
 LABEL io.artifacthub.package.readme-url="https://raw.githubusercontent.com/mlflow-oidc/mlflow-tracking-server-docker/main/readme.md"
 LABEL io.artifacthub.package.logo-url="https://raw.githubusercontent.com/mlflow-oidc/mlflow-oidc-auth/refs/heads/main/web-react/public/favicon.svg"
