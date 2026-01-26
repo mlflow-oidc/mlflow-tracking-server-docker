@@ -1,5 +1,7 @@
 # MLflow Tracking Server Docker Image
 
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/mlflow-oidc-tracking-server)](https://artifacthub.io/packages/search?repo=mlflow-oidc-tracking-server)
+
 Use this image to run the [MLflow Tracking Server](https://github.com/mlflow/mlflow) with the [OIDC Auth plugin](https://github.com/mlflow-oidc/mlflow-oidc-auth).
 
 # Update Schedule
