@@ -835,13 +835,13 @@ requires-dist = [
     { name = "boto3", specifier = ">=1.37.34" },
     { name = "google-cloud-storage", specifier = ">=3.1.0" },
     { name = "mlflow", specifier = "==3.8.1" },
-    { name = "mlflow-oidc-auth", extras = ["caching-redis", "fastapi", "full"], specifier = "==6.6.3" },
+    { name = "mlflow-oidc-auth", extras = ["caching-redis", "fastapi", "full"], specifier = "==6.6.4" },
     { name = "psycopg2-binary", specifier = "==2.9.10" },
 ]
 
 [[package]]
 name = "mlflow-oidc-auth"
-version = "6.6.3"
+version = "6.6.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "alembic" },
@@ -857,9 +857,9 @@ dependencies = [
     { name = "sqlalchemy" },
     { name = "uvicorn" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/32/34/aab16d9e6d9530158c9efd379e6a389d1bf9e932eb750a0ddf1b90077b8e/mlflow_oidc_auth-6.6.3.tar.gz", hash = "sha256:7add97e28ecc92e0f29ab4a657de1db5ad760321432a27b4492f5714d7fed4f6", size = 505460, upload-time = "2026-01-27T21:18:30.515Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/3b/8f/cb627b95fbb8db28ecf6cdb39eddfe46016bbac79562cfbb0e7f9a88bf69/mlflow_oidc_auth-6.6.4.tar.gz", hash = "sha256:e6d7b93cf4b55f3e59db0abdc6db0b03d9b40b6182f9503f9f6319adcab0c854", size = 505354, upload-time = "2026-01-28T15:20:44.468Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/6f/89/206630b488da2f2ee8cd88000954058cd95589833094fd8de813d3b2d909/mlflow_oidc_auth-6.6.3-py3-none-any.whl", hash = "sha256:5be03354ac1ddbc812fa1832bbc1e986b793d4e3cf2470ffe74fa9cfdaa75e69", size = 626214, upload-time = "2026-01-27T21:18:28.614Z" },
+    { url = "https://files.pythonhosted.org/packages/86/71/f334d2369ab94930d5bc2a61df2405f2dd4f7cbb1131179d0be12ded90c8/mlflow_oidc_auth-6.6.4-py3-none-any.whl", hash = "sha256:1759bfd8899b8803babd893c9c7fa3045a33bed60c77db56a73dca4ff8f6b03c", size = 626068, upload-time = "2026-01-28T15:20:42.781Z" },
 ]
 
 [[package]]
