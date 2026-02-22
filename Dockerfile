@@ -38,10 +38,14 @@ COPY pyproject.toml uv.lock /mlflow/
 RUN uv sync --frozen --no-install-project --no-cache
 
 FROM base AS final
+USER root
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 USER python
 WORKDIR /mlflow
 COPY --from=builder --chown=python:python /mlflow /mlflow
 ENV PATH=/mlflow/.venv/bin:$PATH
 ENV OAUTHLIB_INSECURE_TRANSPORT=1
 EXPOSE 5000
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["mlflow", "server", "--host", "0.0.0.0", "--port", "5000", "--app-name", "oidc-auth", "--backend-store-uri", "sqlite:///mlflow.db", "--default-artifact-root", "/mlflow/artifacts"]
