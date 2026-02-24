@@ -5,7 +5,7 @@ description = "MLFlow with OIDC docker image"
 authors = [{ name = "Alexander Kharkevich", email = "alex@kharkevich.org" }]
 requires-python = ">=3.14, <3.15.dev0"
 dependencies = [
-    "mlflow-oidc-auth==6.7.0",
+    "mlflow-oidc-auth==6.7.1",
     "mlflow[genai]==3.10.0",
     "boto3>=1.37.34",
     "azure-storage-blob>=12.25.1",
