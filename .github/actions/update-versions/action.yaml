@@ -18,7 +18,7 @@ runs:
       shell: bash
       run: |
         uv add 'mlflow-oidc-auth[caching-redis,fastapi,full]==${{ inputs.mlflow_oidc_version }}'
-        uv add 'mlflow==${{ inputs.mlflow_version }}'
+        uv add 'mlflow[genai]==${{ inputs.mlflow_version }}'
 
     - name: Rebuild lock file
       shell: bash
