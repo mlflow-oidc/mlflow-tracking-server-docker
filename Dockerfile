@@ -1,4 +1,4 @@
-ARG PYTHON_VERSION=3.12-slim
+ARG PYTHON_VERSION=3.14-slim
 FROM python:${PYTHON_VERSION} AS base
 ARG BUILD_DATE
 
@@ -14,6 +14,8 @@ RUN adduser --disabled-password --gecos '' python
 ENV PYTHONUNBUFFERED=1
 
 RUN apt-get update && apt-get install -y \
+    tini \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 FROM base AS builder
@@ -44,4 +46,5 @@ COPY --from=builder --chown=python:python /mlflow /mlflow
 ENV PATH=/mlflow/.venv/bin:$PATH
 ENV OAUTHLIB_INSECURE_TRANSPORT=1
 EXPOSE 5000
+ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["mlflow", "server", "--host", "0.0.0.0", "--port", "5000", "--app-name", "oidc-auth", "--backend-store-uri", "sqlite:///mlflow.db", "--default-artifact-root", "/mlflow/artifacts"]
