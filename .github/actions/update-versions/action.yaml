@@ -17,12 +17,12 @@ runs:
     - name: Update dependencies
       shell: bash
       run: |
-        uv add 'mlflow-oidc-auth==${{ inputs.mlflow_oidc_version }}'
+        uv add 'mlflow-oidc-auth[cache]==${{ inputs.mlflow_oidc_version }}'
         uv add 'mlflow[genai]==${{ inputs.mlflow_version }}'
 
     - name: Rebuild lock file
       shell: bash
-      run: uv lock
+      run: uv lock --upgrade
 
     - name: Commit and push changes
       shell: bash
