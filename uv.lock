@@ -617,14 +617,14 @@ wheels = [
 
 [[package]]
 name = "gitpython"
-version = "3.1.56"
+version = "3.1.57"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "gitdb" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/81/45/d45f94fa38b199862959cd7b5461a31f03746d75ef59363339fc0c394345/gitpython-3.1.56.tar.gz", hash = "sha256:127adf5c73f1a822e368301c4d5ffa5d305ce611eccab76f3336f9380a78ad0b", size = 229619, upload-time = "2026-07-25T07:41:43.179Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ba/0d/132ed135c871b6bf91adf16a0e43797cd535b81d4973b5d09291c54fc5ee/gitpython-3.1.57.tar.gz", hash = "sha256:c493ec57c0ef6b19743798b6a5af859c71814b524e7e6f97baa2f8e658961488", size = 225898, upload-time = "2026-07-26T07:33:26.351Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/06/27/8b9b039c7f026d4af8954dbbdcc9f101f8d6901daa3a65b065d8f450c0bd/gitpython-3.1.56-py3-none-any.whl", hash = "sha256:bedffdc4bdd2e3cf21b328711a552b0529751f08bff6591339d18492291ad035", size = 216644, upload-time = "2026-07-25T07:41:41.737Z" },
+    { url = "https://files.pythonhosted.org/packages/41/6e/2139de986d9c7c3ac86f1f8be43858ce90bdfe2f7175e6c80c650ba15242/gitpython-3.1.57-py3-none-any.whl", hash = "sha256:4ccf7d73c10f5c9e76043fbb2675ac5a1b3ff5b41e648f56bcbed5f63792ecaf", size = 217151, upload-time = "2026-07-26T07:33:24.838Z" },
 ]
 
 [[package]]
@@ -1132,13 +1132,13 @@ requires-dist = [
     { name = "boto3", specifier = ">=1.37.34" },
     { name = "google-cloud-storage", specifier = ">=3.1.0" },
     { name = "mlflow", extras = ["genai"], specifier = "==3.14.0" },
-    { name = "mlflow-oidc-auth", extras = ["cache"], specifier = "==7.4.7" },
+    { name = "mlflow-oidc-auth", extras = ["cache"], specifier = "==7.6.0" },
     { name = "psycopg2-binary", specifier = "==2.9.11" },
 ]
 
 [[package]]
 name = "mlflow-oidc-auth"
-version = "7.4.7"
+version = "7.6.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "alembic" },
@@ -1155,9 +1155,9 @@ dependencies = [
     { name = "sqlalchemy" },
     { name = "uvicorn" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/28/16/247b95db851b09432b41831a4aa826aef80e6ac24c6020d36d0a29aa319e/mlflow_oidc_auth-7.4.7.tar.gz", hash = "sha256:668337dae168a5bdd70a3c2780e1ee11bd31f80628a38ade2b0fc82e2dac33c0", size = 723794, upload-time = "2026-07-25T05:10:44.855Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/55/51/e6a15aeeaa12c025659a724cd6d85c8f209148cf6b6d94dbc82ab79dbd68/mlflow_oidc_auth-7.6.0.tar.gz", hash = "sha256:aec7e372a54762d8398bce8b684e440926b42e27f32cfd2c10792280a2d50734", size = 747738, upload-time = "2026-07-27T01:43:06.675Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/fb/48/15eca9e9c61db11cc27065a4628e8faf695c51e5ba3709f5914493b69847/mlflow_oidc_auth-7.4.7-py3-none-any.whl", hash = "sha256:cea356d482d246a1d9d555e0b0af96db48729c39b2bdf73829a96949ce50a7e3", size = 917110, upload-time = "2026-07-25T05:10:43.184Z" },
+    { url = "https://files.pythonhosted.org/packages/fa/74/1c501247ac4359b0e5f5578541e41018ecaaee902bdfe8499b2f34ead37f/mlflow_oidc_auth-7.6.0-py3-none-any.whl", hash = "sha256:4376add6f8577a8b639858f899b0c3ec52584020725afea162f071013d6ae274", size = 946426, upload-time = "2026-07-27T01:43:04.923Z" },
 ]
 
 [package.optional-dependencies]
