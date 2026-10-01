@@ -13,7 +13,9 @@ LABEL io.artifacthub.package.logo-url="https://raw.githubusercontent.com/mlflow-
 RUN adduser --disabled-password --gecos '' python
 ENV PYTHONUNBUFFERED=1
 
-RUN apt-get update && apt-get install -y \
+# Upgrade the base image's packages too, so a rebuild picks up Debian security fixes even
+# before the upstream python image is refreshed.
+RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     tini \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
