@@ -7,10 +7,18 @@ Use this image to run the [MLflow Tracking Server](https://github.com/mlflow/mlf
 # Update Schedule
 
 The image is rebuilt automatically on a daily basis if a new version of the MLflow or MLflow-OIDC package is released.
+It is also scanned daily for vulnerabilities; when the base image has a fixable high or critical vulnerability, the
+image is rebuilt on the refreshed base. Findings are published in the repository's code scanning alerts.
 
 # Versioning
 
-The Docker image tags follow this pattern: **MLflow version - OIDC Auth plugin version - Image Build Date**.
+Every build is published under three tags:
+
+| Tag | Example | Moves? |
+|---|---|---|
+| **MLflow version - OIDC Auth plugin version - build date** | `3.16.1-9.0.0-20261002` | Never: pin this for reproducible deployments. |
+| **OIDC Auth plugin version** | `9.0.0` | Yes, to each rebuild of that plugin release (a new MLflow, a refreshed base image). The Helm chart defaults to this tag. |
+| `latest` | `latest` | Yes, to every build. |
 
 # Kubernetes Deployment
 

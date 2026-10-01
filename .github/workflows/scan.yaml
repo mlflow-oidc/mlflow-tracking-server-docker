@@ -1,0 +1,65 @@
+name: scan
+
+# Daily vulnerability scan of the published image.
+#
+# Holds: no untrusted input (schedule / manual only, scans our own published image),
+# a scoped GITHUB_TOKEN (upload code scanning results, start the release workflow).
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      actions: write
+    env:
+      IMAGE: ghcr.io/${{ github.repository_owner }}/mlflow-tracking-server:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Scan image (all findings, for code scanning)
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          image-ref: ${{ env.IMAGE }}
+          format: sarif
+          output: trivy-results.sarif
+          severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+
+      - name: Upload results to code scanning
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: trivy-results.sarif
+          category: trivy-image
+
+      # A rebuild only fixes what the base image fixes: OS packages. Python dependencies are pinned
+      # by uv.lock and move with a new MLflow or plugin release.
+      - name: Find fixable high or critical OS vulnerabilities
+        id: os_vulns
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          image-ref: ${{ env.IMAGE }}
+          format: json
+          output: trivy-os.json
+          vuln-type: os
+          ignore-unfixed: true
+          severity: HIGH,CRITICAL
+          skip-setup-trivy: true
+
+      - name: Rebuild on a refreshed base image
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          count=$(jq '[.Results[]?.Vulnerabilities[]?] | length' trivy-os.json)
+          echo "Fixable high/critical OS vulnerabilities: ${count}"
+          if [ "${count}" -gt 0 ]; then
+            gh workflow run release.yaml --ref "${{ github.event.repository.default_branch }}"
+          fi
