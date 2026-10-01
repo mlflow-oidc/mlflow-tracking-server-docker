@@ -16,8 +16,8 @@ Every build is published under three tags:
 
 | Tag | Example | Moves? |
 |---|---|---|
-| **MLflow version - OIDC Auth plugin version - build date** | `3.16.1-9.0.0-20261002` | Never: pin this for reproducible deployments. |
-| **OIDC Auth plugin version** | `9.0.0` | Yes, to each rebuild of that plugin release (a new MLflow, a refreshed base image). The Helm chart defaults to this tag. |
+| **MLflow version - OIDC Auth plugin version - build date** | `3.16.1-9.0.0-20261002` | Never: pin this for reproducible deployments. The Helm chart defaults to one of these. |
+| **OIDC Auth plugin version** | `9.0.0` | Yes, to each rebuild of that plugin release (a new MLflow, a refreshed base image). A node that has it cached keeps the old build unless it pulls again. |
 | `latest` | `latest` | Yes, to every build. |
 
 # Kubernetes Deployment
