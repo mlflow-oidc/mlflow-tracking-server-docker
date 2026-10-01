@@ -1,0 +1,15 @@
+version: 2
+updates:
+  # Keep workflow and composite-action dependencies current (runtime deprecations, security fixes).
+  - package-ecosystem: github-actions
+    directories:
+      - /
+      - /.github/actions/*
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: ci
