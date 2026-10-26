@@ -1,5 +1,5 @@
 version = 1
-revision = 4
+revision = 5
 requires-python = "==3.14.*"
 resolution-markers = [
     "sys_platform == 'win32'",
@@ -1175,7 +1175,6 @@ dependencies = [
     { name = "google-cloud-storage" },
     { name = "mlflow", extra = ["genai"] },
     { name = "mlflow-oidc-auth", extra = ["cache"] },
-    { name = "prometheus-client" },
     { name = "prometheus-flask-exporter" },
     { name = "psycopg", extra = ["binary"] },
     { name = "psycopg2-binary" },
@@ -1189,8 +1188,7 @@ requires-dist = [
     { name = "google-cloud-storage", specifier = ">=3.1.0" },
     { name = "mlflow", extras = ["genai"], specifier = "==3.17.2" },
     { name = "mlflow-oidc-auth", extras = ["cache"], specifier = "==11.0.2" },
-    { name = "prometheus-client", specifier = "==0.26.0" },
-    { name = "prometheus-flask-exporter", specifier = "==0.23.2" },
+    { name = "prometheus-flask-exporter", specifier = ">=0.23.2" },
     { name = "psycopg", extras = ["binary"], specifier = "==3.3.6" },
     { name = "psycopg2-binary", specifier = "==2.9.11" },
 ]

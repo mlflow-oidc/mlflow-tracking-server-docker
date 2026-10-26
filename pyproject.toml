@@ -13,6 +13,5 @@ dependencies = [
     "google-cloud-storage>=3.1.0",
     "psycopg2-binary==2.9.11",
     "psycopg[binary]==3.3.6",
-    "prometheus-flask-exporter==0.23.2",
-    "prometheus-client==0.26.0",
+    "prometheus-flask-exporter>=0.23.2",
 ]
